@@ -15,5 +15,7 @@
 	<a href="views/elements/pageTag.jsp">페이지 태그 연습하기</a>
 	<h1>3. Directive Tag(include)</h1>
 	<a href="views/elements/includeTag.jsp">include 태그 연습하기</a>
+	<h1>4. 응답화면으로 JSP 써보기</h1>
+	<a href="views/pizzaOrder.jsp">피자 주문하기</a>
 </body>
 </html>
