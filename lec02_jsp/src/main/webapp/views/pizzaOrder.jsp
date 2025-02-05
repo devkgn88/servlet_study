@@ -12,9 +12,9 @@
 		<fieldset>
 			<legend>고객 정보</legend>
 			<label for="user_name">고객명 : </label>
-			<input type="text" id="user_name" name="user_name">
+			<input type="text" id="user_name" name="user_name"><br>
 			<label for="user_phone">전화번호 : </label>
-			<input type="text" id="user_phone" name="user_phone">
+			<input type="text" id="user_phone" name="user_phone"><br>
 			<label for="user_email">E-mail : </label>
 			<input type="email" id="user_email" name="user_email">
 		</fieldset>
