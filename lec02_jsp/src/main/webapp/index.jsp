@@ -11,5 +11,9 @@
 	<a href="views/elements/scripting.jsp">
 		스크립팅 요소 연습
 	</a>
+	<h1>2. Directive Tag(page)</h1>
+	<a href="views/elements/pageTag.jsp">페이지 태그 연습하기</a>
+	<h1>3. Directive Tag(include)</h1>
+	<a href="views/elements/includeTag.jsp">include 태그 연습하기</a>
 </body>
 </html>
