@@ -10,7 +10,7 @@
 	<h1>쿠키 연습하기</h1>
 	<ul>
 		<li>
-			<a href="/createCookie">1. 생성하기</a>
+			<a href="/createCookie">생성하기</a>
 		</li>
 	</ul>
 	<%
