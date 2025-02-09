@@ -32,12 +32,22 @@
 		
 	%>
 	<h3>아이디 : <%=userId%></h3>
+	<a href="/login">로그인</a>
 	<h1>세션 연습하기</h1>
 	<ul>
 		<li>
 			<a href="/createSession">
 				생성하기
 			</a>
+		</li>
+		<li>
+			<%
+				String memberId = "세션 없음";
+				if(session != null){
+					memberId = (String)session.getAttribute("member_id");
+				}
+			%>
+			<%=memberId %>
 		</li>
 	</ul>
 <!-- 	<form action="/createSession" method="get">
