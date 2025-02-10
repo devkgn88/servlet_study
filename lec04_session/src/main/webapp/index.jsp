@@ -32,7 +32,6 @@
 		
 	%>
 	<h3>아이디 : <%=userId%></h3>
-	<a href="/login">로그인</a>
 	<h1>세션 연습하기</h1>
 	<ul>
 		<li>
@@ -50,6 +49,8 @@
 			<%=memberId %>
 		</li>
 	</ul>
+	<a href="/login">로그인</a>
+	
 <!-- 	<form action="/createSession" method="get">
 		<label>아이디</label>
 		<input type="text" name="mem_id">
