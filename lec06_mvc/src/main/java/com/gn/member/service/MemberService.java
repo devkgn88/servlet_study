@@ -21,4 +21,10 @@ public class MemberService {
 		close(conn);
 		return m;
 	}
+	public int updateMember(Member m) {
+		Connection conn = getConnection();
+		int result = new MemberDao().updateMember(m,conn);
+		close(conn);
+		return result; 
+	}
 }

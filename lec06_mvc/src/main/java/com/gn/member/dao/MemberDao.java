@@ -9,6 +9,27 @@ import java.sql.ResultSet;
 import com.gn.member.vo.Member;
 
 public class MemberDao {
+	public int updateMember(Member m, Connection conn) {
+		PreparedStatement pstmt = null;
+		int result = 0; 
+		try {
+			String sql = "UPDATE `member` "
+					+ "SET member_pw = ? "
+					+ ", member_name = ? "
+					+ "WHERE member_no = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, m.getMemberPw());
+			pstmt.setString(2, m.getMemberName());
+			pstmt.setInt(3, m.getMemberNo());
+			result = pstmt.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
 	public int createMember(Member m, Connection conn) {
 		PreparedStatement pstmt = null;
 		int result = 0; 
