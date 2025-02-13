@@ -2,23 +2,24 @@ package com.gn.member.controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 
 import com.gn.member.service.MemberService;
 import com.gn.member.vo.Member;
 
-@WebServlet(name="memberCreateEndServlet", 
-urlPatterns = "/memberCreateEnd")
-public class MemberCreateEndServlet extends HttpServlet {
+@WebServlet(name="memberLoginEndServlet", urlPatterns = "/memberLoginEnd")
+public class MemberLoginEndServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public MemberCreateEndServlet() {
+    public MemberLoginEndServlet() {
         super();
     }
 
@@ -26,32 +27,24 @@ public class MemberCreateEndServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("member_id");
 		String pw = request.getParameter("member_pw");
-		String name = request.getParameter("member_name");
 		
-		Member m = new Member();
-		m.setMemberId(id);
-		m.setMemberPw(pw);
-		m.setMemberName(name);
-		int result = new MemberService().createMember(m);
-		
+		// 전달받은 아이디와 비밀번호가 일치하는 회원 정보
+		Member m = new MemberService().loginMember(id,pw);
 		JSONObject obj = new JSONObject();
 		obj.put("res_code", "500");
-		obj.put("res_msg","회원가입 중 오류가 발생하였습니다.");
+		obj.put("res_msg","로그인 중 오류가 발생하였습니다.");
 		
-		if(result > 0){
+		if(m != null) {
+			HttpSession session = request.getSession();
+			if(session.isNew() || session.getAttribute("member") == null) {
+				session.setAttribute("member", m);
+				session.setMaxInactiveInterval(60*30);
+			}
 			obj.put("res_code", "200");
-			obj.put("res_msg","정상적으로 회원가입되었습니다.");
+			obj.put("res_msg","정상적으로 로그인되었습니다.");		
 		}
 		response.setContentType("application/json;charset=utf-8");
 		response.getWriter().print(obj);
-		
-//		RequestDispatcher view = request.getRequestDispatcher("/views/member/create_fail.jsp");
-//		if(result > 0) {
-//			view = request.getRequestDispatcher("/views/member/create_success.jsp");
-//		} 
-//		view.forward(request, response);
-		
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
