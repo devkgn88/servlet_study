@@ -18,5 +18,6 @@
 			</div>
 		</div>
 	</section>
+	<img src="http://localhost:8087/fileParser" alt="이미지">
 </body>
 </html>
