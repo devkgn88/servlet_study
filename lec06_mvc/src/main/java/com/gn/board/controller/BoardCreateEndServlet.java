@@ -48,7 +48,7 @@ public class BoardCreateEndServlet extends HttpServlet {
 						int idx = oriName.lastIndexOf(".");
 						String ext = fileItem.getName().substring(idx);
 						
-						String uuid = UUID.randomUUID().toString();
+						String uuid = UUID.randomUUID().toString().replace("-", "");
 						String newName = uuid+ext;
 						File uploadFile = new File(dir,newName);
 						fileItem.write(uploadFile);
