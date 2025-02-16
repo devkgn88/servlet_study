@@ -15,6 +15,13 @@
 			<div class="word">
 				<h3>게시글 목록</h3>
 			</div><br>
+			<div class="search">
+				<form action="/boardList" name="search_board_form" method="get">
+					<input type="text" name="board_title" placeholder="검색하고자 하는 게시글 제목을 입력하세요.">
+					<input type="submit" value="검색">
+				</form>	
+			</div>
+			
 			<div class="board_list">
 				<table>
 					<colgroup>

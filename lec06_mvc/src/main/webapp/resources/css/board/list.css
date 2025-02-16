@@ -53,3 +53,22 @@ section {
 	padding: 10px 3px;
 	text-align: center;
 	} 
+.search {
+	height: 70px;
+	line-height: 70px;
+	text-align: center;
+}
+.search input[type='text'] {
+	width: 300px;
+	padding: 10px;
+	border: 1px solid #adadad;
+	border-radius: 5px;
+}
+.search input[type='submit'] {
+	width: 80px;
+	padding: 10px;
+	border: 1px solid #adadad;
+	border-radius: 5px;
+	cursor: pointer;
+}	
+	
