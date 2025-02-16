@@ -6,11 +6,47 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.gn.board.vo.Attach;
 import com.gn.board.vo.Board;
 
 public class BoardDao {
+	
+	
+	public List<Board> selectBoardList(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<Board> list = new ArrayList<Board>();
+		try {
+			String sql = "SELECT * "
+					+ "FROM `board` b "
+					+"JOIN `member` m "
+					+"ON b.board_writer = m.member_no";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Board b = new Board();
+				b.setBoardNo(rs.getInt("board_no"));
+				b.setBoardTitle(rs.getString("board_title"));
+				b.setBoardContent(rs.getString("board_content"));
+				b.setBoardWriter(rs.getInt("board_writer"));
+				b.setMemberName(rs.getString("member_name"));
+				b.setRegDate(rs.getTimestamp("reg_date").toLocalDateTime());
+				b.setModDate(rs.getTimestamp("mod_date").toLocalDateTime());
+				list.add(b);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return list;
+	}
+	
 	
 	public int createAttach(Attach a, Connection conn) {
 		PreparedStatement pstmt = null;

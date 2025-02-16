@@ -1,11 +1,17 @@
 package com.gn.board.controller;
 
 import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.gn.board.service.BoardService;
+import com.gn.board.vo.Board;
 
 @WebServlet("/boardList")
 public class BoardListServlet extends HttpServlet {
@@ -16,7 +22,10 @@ public class BoardListServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		List<Board> list = new BoardService().selectBoardList();
+		request.setAttribute("resultList", list);
+		RequestDispatcher rd=request.getRequestDispatcher("/views/board/list.jsp");
+		rd.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
