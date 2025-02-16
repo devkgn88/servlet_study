@@ -8,8 +8,8 @@ rel="stylesheet" type="text/css">
 		<div class="menu">
 			<ul>
 				<% 
-					Member member = (Member)session.getAttribute("member");
-					if(member == null){
+					Member m = (Member)session.getAttribute("member");
+					if(m == null){
 				%>
 					<li>
 						<a href="/memberLogin">로그인</a>

@@ -19,9 +19,6 @@ rel="stylesheet" type="text/css">
 				<h3>계정 수정</h3>
 			</div>
 			<br>
-			<% 
-				Member m = (Member)session.getAttribute("member");
-			%>
 			<div class="update_member_form">
 				<form action='/memberUpdateEnd' name="update_member_form" method="post">
 					<input type="hidden" name="member_no" value="<%=m.getMemberNo()%>">
