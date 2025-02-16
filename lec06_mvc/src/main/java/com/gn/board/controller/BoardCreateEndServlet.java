@@ -79,7 +79,7 @@ public class BoardCreateEndServlet extends HttpServlet {
 					// 게시글의 번호는 게시글이 insert되어야 작업할 수 있음
 					a.setOriName(oriName);
 					a.setNewName(newName);
-					a.setAttachPath(path+newName);
+					a.setAttachPath(path+"\\"+newName);
 					}
 				}
 			}

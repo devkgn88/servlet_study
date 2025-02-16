@@ -15,16 +15,22 @@ public class BoardService {
 	public int createBoard(Board b, Attach a) {
 		Connection conn = getConnection();
 		int result = 0;
-		conn.setAutoCommit(false);
-		int boardNo = new BoardDao().createBoard(b,conn);
-		a.setBoardNo(boardNo);
-		int attachNo = new BoardDao().createAttach(a,conn);
-		
-		if(boardNo != 0 && attachNo != 0) {
-			commit(conn);
-			result = 1;
-		} else {
+		try {
+			conn.setAutoCommit(false);
+			int boardNo = new BoardDao().createBoard(b,conn);
+			a.setBoardNo(boardNo);
+			int attachNo = new BoardDao().createAttach(a,conn);
+			
+			if(boardNo != 0 && attachNo != 0) {
+				result = 1;
+				commit(conn);
+			} else {
+				rollback(conn);
+			}
+			
+		} catch (Exception e) {
 			rollback(conn);
+			e.printStackTrace();
 		}
 		close(conn);
 		return result;
