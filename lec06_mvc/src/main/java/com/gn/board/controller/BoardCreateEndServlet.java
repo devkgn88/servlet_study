@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.json.simple.JSONObject;
 
 import com.gn.board.service.BoardService;
 import com.gn.board.vo.Attach;
@@ -85,7 +87,21 @@ public class BoardCreateEndServlet extends HttpServlet {
 			}
 			
 			int result = new BoardService().createBoard(b,a);
+			JSONObject obj = new JSONObject();
+			obj.put("res_code", "500");
+			obj.put("res_msg","게시글 등록 중 오류가 발생하였습니다.");
 			
+			if(result > 0){
+				obj.put("res_code", "200");
+				obj.put("res_msg","정상적으로 게시글 등록되었습니다.");
+			}
+			response.setContentType("application/json;charset=utf-8");
+			response.getWriter().print(obj);
+//			RequestDispatcher view = request.getRequestDispatcher("/views/board/create_fail.jsp");
+//			if(result > 0) {
+//				view = request.getRequestDispatcher("/views/board/create_success.jsp");
+//			} 
+//			view.forward(request, response);
 			
 		}catch(Exception e) {
 			e.printStackTrace();

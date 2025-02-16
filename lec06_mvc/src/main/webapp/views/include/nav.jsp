@@ -17,6 +17,9 @@ rel="stylesheet" type="text/css">
 					<li>
 						<a href="/memberCreate">회원가입</a>
 					</li>
+					<li>
+						<a href="/boardList">게시판</a>
+					</li>
 				<%} else{%>
 					<li>
 						<a href="/memberLogout">로그아웃</a>
@@ -27,7 +30,7 @@ rel="stylesheet" type="text/css">
 					<li>
 						<a href="/boardCreate">게시글 등록</a> 
 					</li>
-				<% } %>
+				<% }%>
 			</ul>
 		</div>
 	</div>
