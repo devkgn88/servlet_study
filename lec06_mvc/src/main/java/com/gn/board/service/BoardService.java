@@ -14,6 +14,25 @@ import com.gn.board.vo.Attach;
 import com.gn.board.vo.Board;
 
 public class BoardService {
+	public String selectAttachPath(int attachNo) {
+		Connection conn = getConnection();
+		String attachPath = new BoardDao().selectAttachPath(attachNo,conn);
+		close(conn);
+		return attachPath;  
+	}
+	public Board selectBoardOne(int boardNo) {
+		Connection conn = getConnection();
+		Board b = new BoardDao().selectBoardOne(boardNo,conn);
+		close(conn);
+		return b;
+	}
+	
+	public int selectBoardCount(Board option) {
+		Connection conn = getConnection();
+		int count = new BoardDao().selectBoardCount(conn,option);
+		close(conn);
+		return count;
+	}
 	
 	public List<Board> selectBoardList(Board option){
 		Connection conn = getConnection();

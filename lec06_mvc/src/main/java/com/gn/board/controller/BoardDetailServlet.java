@@ -1,7 +1,6 @@
 package com.gn.board.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,31 +12,21 @@ import javax.servlet.http.HttpServletResponse;
 import com.gn.board.service.BoardService;
 import com.gn.board.vo.Board;
 
-@WebServlet("/boardList")
-public class BoardListServlet extends HttpServlet {
+@WebServlet("/boardDetail")
+public class BoardDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public BoardListServlet() {
+    public BoardDetailServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String title = request.getParameter("board_title");
-		String nowPage = request.getParameter("nowPage");
-		
-		Board option = new Board();
-		if(nowPage != null ) {
-			option.setNowPage(Integer.parseInt(nowPage));
-		}
-		option.setBoardTitle(title);
-		int totalData = new BoardService().selectBoardCount(option);
-		option.setTotalData(totalData);
-		
-		List<Board> list = new BoardService().selectBoardList(option);
-		request.setAttribute("resultList", list);
-		request.setAttribute("paging", option);
-		RequestDispatcher rd=request.getRequestDispatcher("/views/board/list.jsp");
-		rd.forward(request, response);
+		int boardNo = Integer.parseInt(request.getParameter("board_no"));
+		Board b = new BoardService().selectBoardOne(boardNo);
+		RequestDispatcher view
+			= request.getRequestDispatcher("/views/board/detail.jsp");
+		request.setAttribute("board", b);
+		view.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

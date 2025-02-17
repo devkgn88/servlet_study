@@ -6,6 +6,8 @@
 <meta charset="UTF-8">
 <title>게시판</title>
 <link href='<%=request.getContextPath()%>/resources/css/board/list.css' rel="stylesheet" type="text/css">
+<link href='<%=request.getContextPath()%>/resources/css/include/paging.css' rel="stylesheet" type="text/css">
+<script src="<%=request.getContextPath()%>/resources/js/jquery-3.7.1.js"></script>
 </head>
 <body>
 	<%@ include file="/views/include/header.jsp" %>
@@ -41,10 +43,11 @@
 					<tbody>
 						<%@page import="com.gn.board.vo.Board, java.util.*, java.time.format.*" %>
 						<%
-							List<Board> list = (List<Board>)request.getAttribute("resultList");
+						Board paging = (Board)request.getAttribute("paging");	
+						List<Board> list = (List<Board>)request.getAttribute("resultList");
 							for(int i = 0 ; i < list.size(); i++){ %>
-								<tr>
-									<td><%=list.get(i).getBoardNo()%></td>
+								<tr data-board-no="<%=list.get(i).getBoardNo()%>">
+									<td><%=((paging.getNowPage()-1)*paging.getNumPerPage())+i+1%></td>
 									<td><%=list.get(i).getBoardTitle()%></td>
 									<td><%=list.get(i).getMemberName()%></td>
 									<%
@@ -59,5 +62,26 @@
 			</div>
 		</div>
 	</section>	
+	<%if(paging != null){ %>
+		<div class='center'>
+			<div class='pagination'>
+				<% if(paging.isPrev()){ %>
+					<a href='/boardList?nowPage=<%=(paging.getPageBarStart()-1)%>'>&laquo;</a>
+				<% } %>
+				<% for(int i = paging.getPageBarStart() ; i<= paging.getPageBarEnd() ; i++){ %>
+					<a href='/boardList?nowPage=<%=i%>' <%=paging.getNowPage() == i ? "class='active'" : "" %>><%=i%></a>
+				<% }%>
+				<% if(paging.isNext()) {%>
+					<a href='/boardList?nowPage=<%=(paging.getPageBarEnd()+1)%>'>&raquo;</a>
+				<% }%>
+			</div>
+		</div>
+	<%} %>
+	<script>
+		$('.board_list tbody tr').on('click',function(){
+			const boardNo = $(this).data('board-no');
+			location.href="/boardDetail?board_no="+boardNo;
+		});
+	</script>
 </body>
 </html>
