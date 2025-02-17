@@ -14,6 +14,14 @@ import com.gn.board.vo.Attach;
 import com.gn.board.vo.Board;
 
 public class BoardService {
+	
+	public Attach selectAttachOne(int attachNo) {
+		Connection conn = getConnection();
+		Attach a = new BoardDao().selectAttachOne(attachNo,conn);
+		close(conn);
+		return a;
+	}
+	
 	public String selectAttachPath(int attachNo) {
 		Connection conn = getConnection();
 		String attachPath = new BoardDao().selectAttachPath(attachNo,conn);

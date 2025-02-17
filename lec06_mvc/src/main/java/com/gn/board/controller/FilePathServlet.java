@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.gn.board.service.BoardService;
+import com.gn.board.vo.Attach;
 
 @WebServlet("/filePath")
 public class FilePathServlet extends HttpServlet {
@@ -24,7 +25,9 @@ public class FilePathServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1. 파일명 비어있는지 확인
         int attachNo = Integer.parseInt(request.getParameter("attach_no"));  // 읽어올 파일 번호
-        String filePath = new BoardService().selectAttachPath(attachNo);
+        Attach a = new BoardService().selectAttachOne(attachNo);
+
+        String filePath = a.getAttachPath();
         if(filePath == null || filePath.trim().equals("")) {
         	response.sendError(HttpServletResponse.SC_BAD_REQUEST); // 400 오류 반환
             return;

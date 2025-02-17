@@ -25,7 +25,7 @@
 					<li>
 						<img src="<%=request.getContextPath()%>/filePath?attach_no=<%=b.getAttachNo()%>">
 						<br>
-						<span><%=b.getOriName() %></span>
+						<a href="/fileDownload?attach_no=<%=b.getAttachNo()%>"><%=b.getOriName() %></a>
 					</li>
 					<li>
 						<table>

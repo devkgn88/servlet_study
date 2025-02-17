@@ -15,6 +15,30 @@ import com.gn.board.vo.Board;
 
 public class BoardDao {
 	
+	public Attach selectAttachOne(int attachNo, Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Attach a = null;
+		try {
+			String sql = "SELECT * "
+					+ "FROM `attach` "
+					+ "WHERE attach_no = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, attachNo);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				a = new Attach();
+				a.setAttachNo(rs.getInt("attach_no"));
+				a.setOriName(rs.getString("ori_name"));
+				a.setNewName(rs.getString("new_name"));
+				a.setAttachPath(rs.getString("attach_path"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return a; 
+	}
+	
 	public String selectAttachPath(int attachNo,Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
