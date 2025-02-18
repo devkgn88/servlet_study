@@ -17,12 +17,12 @@ rel="stylesheet" type="text/css">
 		<div id="section_wrap">
 			<div class="word">
 				<h3>계정 수정</h3>
-			</div>
-			<br>
+			</div> 
+			<br> 
 			<div class="update_member_form">
 				<form action='/memberUpdateEnd' name="update_member_form" method="post">
-					<input type="hidden" name="member_no" value="<%=m.getMemberNo()%>">
-					<input type="text" name="member_id" value="<%=m.getMemberId()%>" readonly disabled> <br>
+					<input type="hidden" name="member_no" value="<%= m.getMemberNo() %>">
+					<input type="text" name="member_id" value="<%= m.getMemberId() %>" readonly disabled> <br>
 					<input type="password" name="member_pw" placeholder="수정 비밀번호"> <br>
 					<input type="password" name="member_pw_check" placeholder="수정 비밀번호 확인"> <br>
 					<input type="text" name="member_name" value="<%=m.getMemberName()%>" placeholder="닉네임"> <br>
