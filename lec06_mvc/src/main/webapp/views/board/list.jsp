@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html> 
 <head>
@@ -42,41 +45,53 @@
 					</thead>
 					<tbody>
 						<%@page import="com.gn.board.vo.Board, java.util.*, java.time.format.*" %>
-						<%
-						Board paging = (Board)request.getAttribute("paging");	
-						List<Board> list = (List<Board>)request.getAttribute("resultList");
-							for(int i = 0 ; i < list.size(); i++){ %>
-								<tr data-board-no="<%=list.get(i).getBoardNo()%>">
-									<td><%=((paging.getNowPage()-1)*paging.getNumPerPage())+i+1%></td>
-									<td><%=list.get(i).getBoardTitle()%></td>
-									<td><%=list.get(i).getMemberName()%></td>
-									<%
-									DateTimeFormatter dtf
-									= DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
-									%>
-									<td><%=list.get(i).getRegDate().format(dtf)%></td>
+						<c:choose>
+							<c:when test="${not empty resultList }">
+								<c:forEach items="${resultList }" var="b" varStatus="vs">
+									<tr data-board-no="${b.boardNo }">
+										<td>${((paging.nowPage-1)*paging.numPerPage)+(vs.index+1)}</td>
+										<td>${b.boardTitle }</td>
+										<td>${b.memberName }</td>
+										<%-- <td>${b.regDate }</td> --%>
+										<td>
+											<fmt:parseDate value="${b.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="strRegDate"/>
+											<fmt:formatDate value="${strRegDate}" pattern="yy-MM-dd HH:mm"/>
+										</td>
+									</tr>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td colspan="4">조회된 데이터가 없습니다.</td>
 								</tr>
-						<%}%>
+							</c:otherwise>
+						</c:choose>
 					</tbody>
 				</table>
 			</div>
 		</div>
 	</section>	
-	<%if(paging != null){ %>
-		<div class='center'>
-			<div class='pagination'>
-				<% if(paging.isPrev()){ %>
-					<a href='/boardList?nowPage=<%=(paging.getPageBarStart()-1)%>'>&laquo;</a>
-				<% } %>
-				<% for(int i = paging.getPageBarStart() ; i<= paging.getPageBarEnd() ; i++){ %>
-					<a href='/boardList?nowPage=<%=i%>' <%=paging.getNowPage() == i ? "class='active'" : "" %>><%=i%></a>
-				<% }%>
-				<% if(paging.isNext()) {%>
-					<a href='/boardList?nowPage=<%=(paging.getPageBarEnd()+1)%>'>&raquo;</a>
-				<% }%>
+	<c:if test="${not empty paging }">
+		<div class="center">
+			<div class="pagination">
+				<c:if test="${paging.prev}">
+					<a href="/boardList?nowPage=${paging.pageBarStart-1}&board_title=${empty paging.boardTitle ? '' : paging.boardTitle}">
+						&laquo;
+					</a>
+				</c:if>
+				<c:forEach var="i" begin="${paging.pageBarStart}" end="${paging.pageBarEnd}">
+					<a href="/boardList?nowPage=${i}&board_title=${paging.boardTitle}">
+						${i}
+					</a>
+				</c:forEach>
+				<c:if test="${paging.next}">
+					<a href="/boardList?nowPage=${paging.pageBarEnd+1}&board_title=${paging.boardTitle}">
+						&raquo;
+					</a>
+				</c:if>
 			</div>
 		</div>
-	<%} %>
+	</c:if>
 	<script>
 		$('.board_list tbody tr').on('click',function(){
 			const boardNo = $(this).data('board-no');

@@ -1,135 +1,187 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>EL/JSTL</title>
+<meta charset="UTF-8"> 
+<title>EL/JSTL연습</title>
 </head>
 <body>
-	<h2>JSTL</h2>
-	<h1>1. 변수 관련 태그</h1>
-	<c:set var="small" value="10"/>
-	<c:set var="big" value="20"/>
-	<c:set var="result" value="${small + big}"/>
-	
-	<c:set var="result" value="<b>안녕하세요!</b>"/>
-	<!-- 기본 출력: <b>안녕하세요!</b>가 태그가 아니라 글자로 보임 -->
-	<c:out value="${result}"/><br>
-
-	<!-- escapeXml="false" 설정: <b>안녕하세요!</b>가 실제로 굵게 표시됨 -->
-	<c:out value="${result}" escapeXml="false"/>
-	<h1>2. 조건문 (if)</h1>
-	<c:if test="${small le big}">
-		<p>10이 20보다 작거나 같습니다.</p>
-	</c:if>
-	<h1>3. 조건문(choose)</h1>
-	<c:choose>
-		<c:when test="${big gt 20}">
-			<b>big이 20보다 클때</b>
-		</c:when>
-		<c:when test="${big ge 10 }">
-			<b>big은 10보다 크거나 같습니다.</b>
-		</c:when>
-		<c:otherwise>
-			<b>그 외 상황</b>
-		</c:otherwise>
-	</c:choose>
-	<hr>
-	<h2>내장객체(기초)</h2>
+	<h1>EL</h1>
+	<h2>내장객체</h2>
 	<%
-	    // 1. pageScope 설정
-	    pageContext.setAttribute("test", "페이지 범위");
-	    // 2. requestScope 설정
-	    request.setAttribute("test", "리퀘스트 범위");
-	    // 3. sessionScope 설정
-	    session.setAttribute("test", "세션 범위");
-	    // 4. applicationScope 설정
-	    application.setAttribute("test", "애플리케이션 범위");
+		// 1. pageScope 설정
+		pageContext.setAttribute("test", "페이지 범위");
+		// 2. requestCope 설정
+		request.setAttribute("test", "리퀘스트 범위");
+		// 3. sessionScope 설정
+		session.setAttribute("test","세션 범위");
+		// 4. applicationScope 설정
+		application.setAttribute("test", "애플리케이션 범위");
 	%>
-	<h3>JSP 방식</h3>
-	<p><%= pageContext.getAttribute("test")%></p>
-	<p><%= request.getAttribute("test")%></p>
-	<p><%= session.getAttribute("test")%></p>
-	<p><%= application.getAttribute("test")%></p>
-	<h3>EL 방식</h3>
+	<h3>1. JSP방식</h3>
+	<ul>
+		<li><%=pageContext.getAttribute("test") %></li>
+		<li><%=request.getAttribute("test") %></li>
+		<li><%=session.getAttribute("test") %></li>
+		<li><%=application.getAttribute("test") %></li>
+	</ul>
+	<h3>2. EL방식</h3>
 	<p>${test}</p>
-	<p>${pageScope.test}</p>
-	<p>${requestScope.test}</p>
 	<p>${sessionScope.test}</p>
-	<p>${applicationScope.test}</p>
-	
-	<h2>내장객체(조회)</h2>
+	<h3>3. 객체 꺼내오기</h3>
 	<%@ page import="com.gn.vo.Person" %>
-	<% request.setAttribute("person", new Person("김철수",25)); %>
-	<h3>JSP 방식</h3>
-	<% Person p = (Person)request.getAttribute("person");%>
-	<p>이름: <%= p.getName() %></p>
-	<p>나이: <%= p.getAge() %>세</p>
-	<h3>EL 방식</h3>
-	<p>이름: ${person.name}</p>
-	<p>나이: ${person.age}세</p>	
-	
-	<h3>EL의 연산자</h3>
+	<% 
+		request.setAttribute("person", new Person("김철수",77));
+	%>
+	<ol>
+		<li>
+			<% Person p = (Person)request.getAttribute("person"); %>
+			JSP 방식 : <%=p.getName() + " : " + p.getAge() %>
+		</li>
+		<li>
+			<%-- 1. 다운캐스팅 X 
+				2. getter 알아서 실행됨 --%>
+			EL 방식 : ${person.name} : ${person.age}
+		</li>
+	</ol>
+	<h2>EL의 연산자</h2>
 	<%@page import="java.util.*" %>
 	<%
-	 // 숫자 전달
-    request.setAttribute("num1", 10);
-    request.setAttribute("num2", 3);
-
-    // 문자열 전달
-    request.setAttribute("str1", "사과");
-    request.setAttribute("str2", "바나나");
-
-    // 객체 전달
-    request.setAttribute("p1", new Person("이영희", 13));
-    request.setAttribute("p2", null);
-
-    // 리스트 전달
-    request.setAttribute("list1", new ArrayList<>());  // 빈 리스트
-    List<String> list2 = new ArrayList<>();
-    list2.add("오늘 날씨가 춥네요");
-    request.setAttribute("list2", list2);
+		// 1. 숫자
+		request.setAttribute("num1",10);
+		request.setAttribute("num2",3);
+		
+		// 2. 문자
+		request.setAttribute("str1","사과");
+		request.setAttribute("str2","바나나");
+		
+		// 3. 객체
+		request.setAttribute("p1",new Person("이영희",23));
+		request.setAttribute("p2",null);
+		
+		// 4. 리스트
+		request.setAttribute("list1",new ArrayList<String>());
+		List<String> list2 = new ArrayList<String>();
+		list2.add("오늘 날씨가 춥네요.");
+		request.setAttribute("list2",list2);
 	%>
 	<h3>1. 산술 연산</h3>
 	<p>
 		10 + 3 = ${num1+num2}<br>
 		10 - 3 = ${num1-num2}<br>
-		10 * 3 = ${num1*num2}<br>
-		10 / 3 = ${num1 / num2} 또는 ${num1 div num2}<br>
-		10 % 3 = ${num1 % num2} 또는 ${num1 mod num2} 
+		10 / 3 = ${num1 div num2 }<br>
+		10 % 3 = ${num1 mod num2 }
 	</p>
 	<h3>2. 문자열 연결</h3>
-	<p>${str1}${str2}</p>
-	<h3>3.대소 비교 연산</h3>
+	<p>${str1 } : ${str2 }</p>
+	<h3>3. 대소 비교</h3>
 	<p>
-		10이 3보다 큰가요 : ${num1>num2} 또는 ${num1 gt num2}<br>
-		10이 3보다 작은가요 : ${num1<num2} 또는 ${num1 lt num2}<br>
-		10이 3보다 크거나 같은가요 : ${num1>=num2} 또는 ${num1 ge num2}<br>
-		10이 3보다 작거나 같은가요 : ${num1<=num2} 또는 ${num1 le num2}<br>	
+		num1이 num2보다 큰가요? : ${num1 gt num2 }<br>
+		num1이 num2보다 작거나 같은가요? : ${num1 le num2 }
 	</p>
-	<h3>4. 동등 비교 연산</h3>
+	<h3>4. 동등 비교</h3>
 	<p>
-		숫자 일치 : ${num1 == 10} 또는 ${num1 eq 10}<br>
-		숫자 불일치 : ${num2 !=3} 또는 ${num2 ne 3}<br>
-		문자 일치 : ${str1 == str2} 또는 ${str1 eq str2}<br>
-		문자값 비교 : ${str1 eq "복숭아"} 또는 ${str2 eq '배'}  
+		숫자 일치 : ${num1 eq 10 }<br>
+		숫자 불일치 : ${num2 ne 3 }<br>
+		문자 일치 : ${str1 eq str2 }<br>
+		문자 불일치 : ${str1 ne str2 }<br>
 	</p>
-	<h3>5. 객체 null 확인</h3>
+	<h3>5. 비어있는지 확인</h3>
+	<ol>
+		<li>문자 : ${not empty str1 }</li>
+		<li>객체 : ${empty p2 } </li>
+		<li>컬렉션 : ${empty list1 }</li>
+	</ol>
+	<h3>6. 논리 연산자</h3>
 	<p>
-		p2가 null인가요 : ${p2 == null} 또는 ${empty p2}<br>
-		p1이 null이 아닌가요 : ${p1 != null} 또는 ${not empty p1}
+		${true and true }<br>
+		${num1 eq 10 and num2 eq 3 }<br>
+		${false or true }
 	</p>
-	<h3>6. 리스트 비어있는지 확인</h3>
-	<p>
-		list1이 비어있나요 : ${empty list1}<br>
-		list2에 데이터가 있나요 : ${not empty list2}
-	</p>
-	<h3>7. 논리 연산자</h3>
-	<p>
-		${ true && true } 또는 ${ true and true }<br>
-		${ false || true } 또는 ${ false or true }
-	</p>
+	<hr>
+	<h1>JSTL</h1>
+	<h2>1. 변수</h2>
+	<c:set var="n1" value="15"/>
+	<c:set var="n2" value="20"/>
+	<c:set var="result" value="${n1+n2 }"/>
+	
+	<c:out value="${result }"/>
+	
+	<c:set var="hello" value="<b>안녕하세요!</b>"/>
+	<c:out value="${hello }" escapeXml="false"/>
+	
+	<h2>2. 조건문(if)</h2>
+	<c:if test="${num1 le num2}">
+		<p>num1이 num2보다 작거나 같다.</p>
+	</c:if>
+	<h2>3. 조건문(choose)</h2>
+	<c:choose>
+		<c:when test="${num1 gt 20 }">
+			<p>10이 20보다 큽니까?</p>
+		</c:when>
+		<c:when test="${num1 ge 10 }">
+			<p>num1이 10보다 크거나 같으면서, 20보다 작거나 같나요?</p>
+		</c:when>
+		<c:otherwise>
+			<p>num1이 10보다 작습니까?</p>
+		</c:otherwise>
+	</c:choose>
+	<h2>4.반복문</h2>
+	<c:forEach var="i" begin="1" end="10" step="2">
+		<p>반복 숫자 : ${i }</p>
+	</c:forEach>
+	<%
+		String[] colors={"red","green","blue"};
+		request.setAttribute("colors",colors);
+	%>
+	<ul>
+		<c:forEach var="color" items="${colors}">
+			<li style="color:${color}">${color }</li>
+		</c:forEach>
+	</ul>
+	<c:forEach var="i" begin="1" end="6">
+		<h${i}>Hello, World!</h${i}>
+	</c:forEach>
+	
+	<c:forEach var="num" begin="2" end="5" varStatus="vs">
+		<p <c:if test="${vs.first }">style="color:red"</c:if>>
+			인덱스 : ${vs.index }<br>
+			카운트 : ${vs.count }<br>
+			첫번째인가요? : ${vs.first }<br>
+			마지막인가요? : ${vs.last }
+		</p>
+	</c:forEach>
+	<hr>
+	<h1>JSTL Formatting</h1>
+	<h2>1. 숫자 변형</h2>
+	<fmt:formatNumber value="1234.567" type="number"/><br>
+	<fmt:setLocale value="ko_KR"/>
+	<fmt:formatNumber value="1234.567" type="currency"/><br>
+	<fmt:setLocale value="en_US"/>
+	<fmt:formatNumber value="1234.567" type="currency"/><br>
+	<fmt:formatNumber value="0.875" type="percent"/><br>
+	<fmt:formatNumber value="1234.567" pattern="#,###"/> <br>
+	<fmt:formatNumber value="133234.5363" pattern="00000.00"/> <br>
+	<fmt:formatNumber value="1234.5" pattern="#,###.000"/> <br>
+	<h2>2. 날짜 변형</h2>
+	<c:set var="now" value="<%= new java.util.Date()%>" />
+	<fmt:formatDate value="${now}" type="date"/><br>
+	<fmt:formatDate value="${now}" type="time"/><br>
+	<fmt:formatDate value="${now}" type="both"/><br>
+	<fmt:formatDate value="${now}" pattern="yyyy-MM-dd HH:mm:ss"/>
+	
+	<fmt:parseDate value="25-02-16" pattern="yy-MM-dd" var="parsedDate"/>
+<fmt:formatDate value="${parsedDate}" type="both"/>
+	<h1>JSTL Function</h1>
+	
+	<c:set var="data" value="How Are You? I am fine"/>
+	<p><c:out value="${data}"/></p>
+	<p><c:out value="${fn:toUpperCase(data) }"/></p>
+	<p><c:out value="${fn:replace(data,'fine','tried') }"/></p>
+	<p><c:out value="${fn:contains(data,'You')?'You가 있네':'You가 없네' }"/></p>
 </body>
 </html>
