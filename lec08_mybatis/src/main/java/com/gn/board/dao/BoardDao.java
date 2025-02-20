@@ -33,7 +33,7 @@ public class BoardDao {
 		return session.selectOne("boardMapper.selectBoardOne",boardNo);
 	}
 	
-	public List<Board> selectBoardList(SqlSession session){
-		return session.selectList("boardMapper.selectBoardList");
+	public List<Board> selectBoardList(SqlSession session,Board option ){
+		return session.selectList("boardMapper.selectBoardList",option);
 	}
 }

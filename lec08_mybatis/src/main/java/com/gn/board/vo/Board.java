@@ -13,7 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Board {
+public class Board extends Search{
 	private int boardNo;
 	private String boardTitle;
 	private String boardContent;

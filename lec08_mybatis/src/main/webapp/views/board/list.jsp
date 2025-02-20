@@ -10,6 +10,15 @@
 <title>게시판 목록</title>
 </head>
 <body>
+	<form action="<c:url value='/boardList'/>">
+		<fieldset>
+			<legend>검색하기</legend>
+			<input type="text" name="board_title" placeholder="제목">
+			<input type="text" name="board_content" placeholder="내용">
+			<input type="text" name="member_name" placeholder="작성자">
+			<input type="submit" value="조회">
+		</fieldset>
+	</form>
 	<table id="board_tbl" border="1">
 		<thead>
 			<tr>

@@ -34,9 +34,9 @@ public class BoardService {
 		return result;
 	}
 	
-	public List<Board> selectBoardList(){
+	public List<Board> selectBoardList(Board option){
 		SqlSession session = getSqlSession();
-		List<Board> resultList = new BoardDao().selectBoardList(session);
+		List<Board> resultList = new BoardDao().selectBoardList(session,option);
 		session.close();
 		return resultList;
 	}

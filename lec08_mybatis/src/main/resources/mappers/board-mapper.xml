@@ -29,20 +29,29 @@
 	</update>
 	
 	<select id="selectBoardList" 
-	resultType="board" resultMap="boardMap">
+	resultType="board" resultMap="boardMap" parameterType="board">
 		SELECT * 
 		FROM `board`
+		<if test='searchType != -1'>
+			<where>
+				<if ></if>
+			</where>
+		</if>
 	</select>
 	<select id="selectBoardOne" resultMap="boardMap" parameterType="_int">
 		SELECT *
 		FROM `board`
-		WHERE board_no = #{param1}
+		<where>
+			board_no = #{board_no}
+		</where>
 	</select>
 	<select id="selectBoardTwo" parameterType="map" resultMap="boardMap">
 		SELECT *
 		FROM `board`
-		WHERE board_title LIKE CONCAT('%',#{board_title},'%')
-		AND board_content LIKE CONCAT('%',#{board_content},'%')
+		<where>
+			board_title LIKE CONCAT('%',#{board_title},'%')
+			AND board_content LIKE CONCAT('%',#{board_content},'%')
+		</where>
 	</select>
 	
 	<select id="selectBoardObj" parameterType="board" resultMap="boardMap">
