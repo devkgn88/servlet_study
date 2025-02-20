@@ -11,9 +11,44 @@
 		<result property="regDate" column="reg_date"/>
 		<result property="modDate" column="mod_date"/>	
 	</resultMap>
+	<insert id="insertBoard" parameterType="board">
+		INSERT INTO `board`(board_title ,board_content ,board_writer)
+		VALUES(#{boardTitle},#{boardContent},#{boardWriter})
+	</insert>
+	
+	<delete id="deleteBoard" parameterType="_int">
+		DELETE FROM board
+		WHERE board_no = #{boradNo}
+	</delete>
+	
+	<update id="updateBoard" parameterType="board">
+		UPDATE `board`
+		SET board_title = #{boardTitle}
+		,board_content = #{boardContent}
+		WHERE board_no = #{boardNo}
+	</update>
+	
 	<select id="selectBoardList" 
-	resultType="com.gn.board.vo.Board" resultMap="boardMap">
+	resultType="board" resultMap="boardMap">
 		SELECT * 
 		FROM `board`
+	</select>
+	<select id="selectBoardOne" resultMap="boardMap" parameterType="_int">
+		SELECT *
+		FROM `board`
+		WHERE board_no = #{param1}
+	</select>
+	<select id="selectBoardTwo" parameterType="map" resultMap="boardMap">
+		SELECT *
+		FROM `board`
+		WHERE board_title LIKE CONCAT('%',#{board_title},'%')
+		AND board_content LIKE CONCAT('%',#{board_content},'%')
+	</select>
+	
+	<select id="selectBoardObj" parameterType="board" resultMap="boardMap">
+		SELECT *
+		FROM `board`
+		WHERE board_title LIKE CONCAT('%',#{boardTitle},'%')
+		AND board_content LIKE CONCAT('%',#{boardContent},'%')
 	</select>
 </mapper>
